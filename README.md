@@ -1,2 +1,5 @@
-# image_reorganizer
-Leightweight command line tool to reorganize image files
+# Image Reorganizer
+
+Based on the Qt library and Exif loader (https://github.com/mayanklahiri/easyexif).
+
+Reorganizes image files based on their creation date. Files with unknown creation dates are copied in the folder 'Unknown'.

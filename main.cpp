@@ -93,13 +93,13 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Image Reorganizer: Reorganizes image files based on their creation date.");
+    parser.setApplicationDescription("Image Reorganizer: Reorganizes image files based on their creation date. Files with unknown creation dates are copied in the folder 'Unknown'.");
     parser.addHelpOption();
 
-    QCommandLineOption scanDirPath({"s", "scan"}, "The <dir/folder> which is recursivley scanned for image files.", "dir/folder", "F:/bilder");
-    QCommandLineOption targetDirPath({"t", "target"}, "The <dir/folder> where the new files should be copied to.", "dir/folder", "F:/newtest");
+    QCommandLineOption scanDirPath({"s", "scan"}, "The <dir> which is recursivley scanned for image files.", "dir", "");
+    QCommandLineOption targetDirPath({"t", "target"}, "The <dir> where the new files should be copied to.", "dir", "");
     QCommandLineOption removeAfterCopy({"r", "remove"}, "Set <option> to 0 to keep files and 1 to remove them after copying. Default is 0.", "option", "0");
-    QCommandLineOption fileEndings({"f", "file"}, "Specify the file <endings> to search for. Must be seperated by a ','. Default is set to png,jpg.", "endings", "TIF,CR2,mp4,m4v,jpeg,gif,mov,avi,jpx,bmp,png,jpg");
+    QCommandLineOption fileEndings({"f", "file"}, "Specify the file <endings> to search for. Must be seperated by a ','. Default is set to png,jpg.", "endings", "png,jpg");
 
     parser.addOption(scanDirPath);
     parser.addOption(targetDirPath);
@@ -107,6 +107,11 @@ int main(int argc, char *argv[])
     parser.addOption(fileEndings);
 
     parser.process(a);
+
+    if(!QDir().exists(parser.value(scanDirPath))) {
+        qWarning() << "Scan folder" << parser.value(scanDirPath) << "does not exist.";
+        return 0;
+    }
 
     QStringList endingsList = parser.value(fileEndings).split(',');
     for(QString& fileEnding : endingsList) {

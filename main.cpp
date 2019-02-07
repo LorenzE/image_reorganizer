@@ -57,8 +57,12 @@ void copy(const QFileInfoList& list,
         }
 
         if(dateTime.isValid() && !dateTime.isNull()) {
-            //month = dateTime.toString("MM")+"_"+dateTime.toString("MMMM");
-            newFolder = targetDirPath + QString("/%1-%2/").arg(dateTime.date().year()).arg(dateTime.toString("MM"));
+            //Option 1 Folder names YYYY/MM_MMMM
+            month = dateTime.toString("MM")+"_"+dateTime.toString("MMMM");
+            newFolder = targetDirPath + QString("/%1/%2/").arg(dateTime.date().year()).arg(month);
+
+            //Option 2 Folder names YYYY-MM
+            //newFolder = targetDirPath + QString("/%1-%2/").arg(dateTime.date().year()).arg(dateTime.toString("MM"));
         } else {
             newFolder = targetDirPath + QString("/unknown/");
         }
@@ -98,8 +102,8 @@ int main(int argc, char *argv[])
 
     QCommandLineOption scanDirPath({"s", "scan"}, "The <dir> which is recursivley scanned for image files.", "dir", "F:/CloudStation/Bilder/Handycam");
     QCommandLineOption targetDirPath({"t", "target"}, "The <dir> where the new files should be copied to.", "dir", "F:/Handy_Backup");
-    QCommandLineOption removeAfterCopy({"r", "remove"}, "Set <option> to 0 to keep files and 1 to remove them after copying. Default is 0.", "option", "1");
-    QCommandLineOption fileEndings({"f", "file"}, "Specify the file <endings> to search for. Must be seperated by a ','. Default is set to png,jpg.", "endings", "3gp,mov,mp4,png,jpeg,jpg");
+    QCommandLineOption removeAfterCopy({"r", "remove"}, "Set <option> to 0 to keep files and 1 to remove them after copying. Default is 0.", "option", "0");
+    QCommandLineOption fileEndings({"f", "file"}, "Specify the file <endings> to search for. Must be seperated by a ','. Default is set to 3gp,mov,mp4,png,jpeg,jpg.", "endings", "3gp,mov,mp4,png,jpeg,jpg");
 
     parser.addOption(scanDirPath);
     parser.addOption(targetDirPath);
